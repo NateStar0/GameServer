@@ -1,7 +1,7 @@
 /*
         --- Main.js ---
 
-        By Nahoo (29 / 9/ 2023)
+        By Nahoo (29 / 9 / 2023)
 */
 
 const net = require('net');
@@ -34,7 +34,7 @@ const server = net.createServer((socket) =>
 
     socket.on('error', (error) => 
     {
-        if(error.errno != -4077)
+        if(error.errno != -4077) // This is an error often produced as the GM client disconnects
         {
             console.log('error, socket disconnected', error);
         }

@@ -1,0 +1,49 @@
+/*
+        --- Client stuff ---
+
+        By Nahoo
+
+*/
+
+/// Create Event -----------------------------------------------------------------------------------------------------
+
+/// @description Initialise clientside connection
+
+type = network_socket_tcp;
+port = 15452;
+dir = "game.nahoo.dev";
+
+socket = network_create_socket(type);
+log((network_connect_raw(socket, dir, port) >= 0) ? "Connected successfully" : "Failed connection")
+
+/// Step Event -----------------------------------------------------------------------------------------------------
+
+/// Game End / Clean up --------------------------------------------------------------------------------------------
+
+network_destroy(socket);
+
+/// Async (Networking) ---------------------------------------------------------------------------------------------
+
+/// @description Manage async data
+
+var event = async_load[? "id"];
+
+if(socket == event)
+{
+	var tempBuffer = async_load[? "buffer"];
+	
+	buffer_seek(tempBuffer, buffer_seek_start, 0);
+	
+	log(buffer_read(tempBuffer, buffer_string));
+}
+
+/// Misc
+
+// Sample sending a buffer
+
+buffer = buffer_create(1024, buffer_fixed, 1);
+
+buffer_seek(buffer, buffer_seek_start, 0)
+buffer_write(buffer, buffer_string, "TEST!");
+
+network_send_raw(socket, buffer, buffer_tell(buffer));
